@@ -6,7 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Eye, EyeOff, Mail, Lock, Shield, User } from "lucide-react";
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -91,55 +93,72 @@ const AuthForm = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
-      <Card className="w-full max-w-md shadow-xl border-0 bg-white/95 backdrop-blur">
-        <CardHeader className="space-y-2 text-center">
-          <CardTitle className="text-2xl font-bold text-slate-800">
-            {isLogin ? "Welcome back" : "Create account"}
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-cyan-50 p-4">
+      <Card className="w-full max-w-md shadow-2xl border-0 bg-white/80 backdrop-blur-sm">
+        <CardHeader className="space-y-3 text-center pb-6">
+          <div className="flex justify-center mb-2">
+            <Badge variant="secondary" className="px-4 py-1.5">
+              <Shield className="w-3 h-3 mr-1" />
+              {isLogin ? "Sign In" : "Sign Up"}
+            </Badge>
+          </div>
+          <CardTitle className="text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
+            {isLogin ? "Welcome back" : "Join us today"}
           </CardTitle>
-          <CardDescription className="text-slate-600">
+          <CardDescription className="text-slate-600 text-base">
             {isLogin 
-              ? "Enter your credentials to access your account" 
-              : "Enter your information to create a new account"
+              ? "Sign in to access your dashboard and continue your journey" 
+              : "Create your account and start exploring amazing features"
             }
           </CardDescription>
         </CardHeader>
         
         <div>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-5 px-6">
             {/* Email Field */}
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-medium text-slate-700">
-                Email
+              <Label htmlFor="email" className="text-sm font-semibold text-slate-700 flex items-center">
+                <Mail className="w-4 h-4 mr-2" />
+                Email Address
               </Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className={`pl-10 ${errors.email ? 'border-red-500 focus:border-red-500' : ''}`}
-                />
-              </div>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Enter your email address"
+                value={formData.email}
+                onChange={handleInputChange}
+                className={`h-11 ${errors.email ? 'border-red-500 focus:border-red-500' : 'border-slate-200 focus:border-indigo-500'}`}
+              />
               {errors.email && (
-                <Alert className="border-red-200 bg-red-50">
-                  <AlertDescription className="text-red-600 text-sm">
+                <Alert variant="destructive" className="py-2">
+                  <AlertDescription className="text-sm">
                     {errors.email}
                   </AlertDescription>
                 </Alert>
               )}
             </div>
 
-            {/* Password Field */}
+            {/* Password Label with Forgot Password */}
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm font-medium text-slate-700">
-                Password
-              </Label>
+              <div className="flex justify-between items-center">
+                <Label htmlFor="password" className="text-sm font-semibold text-slate-700 flex items-center">
+                  <Lock className="w-4 h-4 mr-2" />
+                  Password
+                </Label>
+                {isLogin && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-xs text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 h-auto p-1"
+                  >
+                    Forgot password?
+                  </Button>
+                )}
+              </div>
+              
+              {/* Password Field */}
               <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
                 <Input
                   id="password"
                   name="password"
@@ -147,25 +166,24 @@ const AuthForm = () => {
                   placeholder="Enter your password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  className={`pl-10 pr-10 ${errors.password ? 'border-red-500 focus:border-red-500' : ''}`}
+                  className={`h-11 pr-12 ${errors.password ? 'border-red-500 focus:border-red-500' : 'border-slate-200 focus:border-indigo-500'}`}
                 />
                 <Button
-                  type="button"
                   variant="ghost"
                   size="sm"
-                  className="absolute right-1 top-1 h-8 w-8 p-0 hover:bg-slate-100"
+                  className="absolute right-1 top-1 h-9 w-9 p-0 hover:bg-slate-100"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
-                    <EyeOff className="h-4 w-4 text-slate-400" />
+                    <EyeOff className="h-4 w-4 text-slate-500" />
                   ) : (
-                    <Eye className="h-4 w-4 text-slate-400" />
+                    <Eye className="h-4 w-4 text-slate-500" />
                   )}
                 </Button>
               </div>
               {errors.password && (
-                <Alert className="border-red-200 bg-red-50">
-                  <AlertDescription className="text-red-600 text-sm">
+                <Alert variant="destructive" className="py-2">
+                  <AlertDescription className="text-sm">
                     {errors.password}
                   </AlertDescription>
                 </Alert>
@@ -175,49 +193,35 @@ const AuthForm = () => {
             {/* Confirm Password Field (Sign Up Only) */}
             {!isLogin && (
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword" className="text-sm font-medium text-slate-700">
+                <Label htmlFor="confirmPassword" className="text-sm font-semibold text-slate-700 flex items-center">
+                  <Lock className="w-4 h-4 mr-2" />
                   Confirm Password
                 </Label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                  <Input
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Confirm your password"
-                    value={formData.confirmPassword}
-                    onChange={handleInputChange}
-                    className={`pl-10 ${errors.confirmPassword ? 'border-red-500 focus:border-red-500' : ''}`}
-                  />
-                </div>
+                <Input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Confirm your password"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  className={`h-11 ${errors.confirmPassword ? 'border-red-500 focus:border-red-500' : 'border-slate-200 focus:border-indigo-500'}`}
+                />
                 {errors.confirmPassword && (
-                  <Alert className="border-red-200 bg-red-50">
-                    <AlertDescription className="text-red-600 text-sm">
+                  <Alert variant="destructive" className="py-2">
+                    <AlertDescription className="text-sm">
                       {errors.confirmPassword}
                     </AlertDescription>
                   </Alert>
                 )}
               </div>
             )}
-
-            {/* Forgot Password Link (Login Only) */}
-            {isLogin && (
-              <div className="flex justify-end">
-                <Button
-                  type="button"
-                  variant="link"
-                  className="text-sm text-blue-600 hover:text-blue-800 p-0 h-auto"
-                >
-                  Forgot password?
-                </Button>
-              </div>
-            )}
           </CardContent>
 
-          <CardFooter className="flex flex-col space-y-4">
+          <CardFooter className="flex flex-col space-y-5 px-6 pt-2">
             <Button
               onClick={handleSubmit}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5"
+              size="lg"
+              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-3 shadow-lg hover:shadow-xl transition-all duration-200"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -226,21 +230,33 @@ const AuthForm = () => {
                   <span>{isLogin ? "Signing in..." : "Creating account..."}</span>
                 </div>
               ) : (
-                isLogin ? "Sign in" : "Create account"
+                <div className="flex items-center space-x-2">
+                  {isLogin ? <Shield className="w-4 h-4" /> : <User className="w-4 h-4" />}
+                  <span>{isLogin ? "Sign in to account" : "Create new account"}</span>
+                </div>
               )}
             </Button>
 
-            <div className="text-center text-sm text-slate-600">
-              {isLogin ? "Don't have an account?" : "Already have an account?"}
-              <Button
-                type="button"
-                variant="link"
-                onClick={toggleAuthMode}
-                className="text-blue-600 hover:text-blue-800 font-medium p-0 ml-1 h-auto"
-              >
-                {isLogin ? "Sign up" : "Sign in"}
-              </Button>
+            <div className="w-full">
+              <Separator className="my-4" />
+              <div className="text-center">
+                <span className="text-sm text-slate-600 bg-white px-3">
+                  {isLogin ? "New to our platform?" : "Already have an account?"}
+                </span>
+              </div>
             </div>
+
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={toggleAuthMode}
+              className="w-full border-2 border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 text-slate-700 font-medium py-3 transition-all duration-200"
+            >
+              <div className="flex items-center space-x-2">
+                {isLogin ? <User className="w-4 h-4" /> : <Shield className="w-4 h-4" />}
+                <span>{isLogin ? "Create new account" : "Sign in instead"}</span>
+              </div>
+            </Button>
           </CardFooter>
         </div>
       </Card>
